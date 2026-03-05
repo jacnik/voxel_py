@@ -1,14 +1,14 @@
-from settings import (njit, np, glm, math, WIN_RES, BG_COLOR)
-from world_objects.chunk import Chunk
+from settings import (njit, np, glm)
+from world import World
 
 
 class Scene:
     def __init__(self, app):
         self.app = app
-        self.chunk = Chunk(self.app)
+        self.world = World(self.app)
 
     def update(self):
-        pass
+        self.world.update()
 
     def render(self):
-        self.chunk.render()
+        self.world.render()
