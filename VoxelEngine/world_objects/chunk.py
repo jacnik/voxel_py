@@ -1,5 +1,6 @@
-from settings import (np, glm, CHUNK_SIZE, CHUNK_AREA, CHUNK_VOL)
+from settings import (np, glm, njit, CHUNK_SIZE, CHUNK_AREA, CHUNK_VOL)
 from meshes.chunk_mesh import ChunkMesh
+from terrain_gen import get_height
 
 
 class Chunk:
@@ -37,20 +38,23 @@ class Chunk:
 
         # fill chunk
         cx, cy, cz = glm.ivec3(self.position) * CHUNK_SIZE
-
-        for x in range(CHUNK_SIZE):
-            for z in range(CHUNK_SIZE):
-                wx = x + cx
-                wz = z + cz
-                world_height = int(glm.simplex(
-                    glm.vec2(wx, wz) * 0.01) * 32 + 32)
-                local_height = min(world_height - cy, CHUNK_SIZE)
-
-                for y in range(local_height):
-                    # wy = y + cy
-                    voxels[x + CHUNK_SIZE * z + CHUNK_AREA * y] = 2
+        self.generate_terrain(voxels, cx, cy, cz)
 
         if np.any(voxels):
             self.is_empty = False
 
         return voxels
+
+    @staticmethod
+    @njit
+    def generate_terrain(voxels, cx, cy, cz):
+        for x in range(CHUNK_SIZE):
+            for z in range(CHUNK_SIZE):
+                wx = x + cx
+                wz = z + cz
+                world_height = get_height(wx, wz)
+                local_height = min(world_height - cy, CHUNK_SIZE)
+
+                for y in range(local_height):
+                    # wy = y + cy
+                    voxels[x + CHUNK_SIZE * z + CHUNK_AREA * y] = 1
