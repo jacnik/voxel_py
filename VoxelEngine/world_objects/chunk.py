@@ -1,6 +1,6 @@
 from settings import (np, glm, njit, CHUNK_SIZE, CHUNK_AREA, CHUNK_VOL)
 from meshes.chunk_mesh import ChunkMesh
-from terrain_gen import get_height
+from terrain_gen import get_height, set_voxel_id
 
 
 class Chunk:
@@ -56,5 +56,5 @@ class Chunk:
                 local_height = min(world_height - cy, CHUNK_SIZE)
 
                 for y in range(local_height):
-                    # wy = y + cy
-                    voxels[x + CHUNK_SIZE * z + CHUNK_AREA * y] = 1
+                    wy = y + cy
+                    set_voxel_id(voxels, x, y, z, wx, wy, wz, world_height)
