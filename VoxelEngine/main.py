@@ -69,7 +69,25 @@ class VoxelEngine:
         pg.quit()
         sys.exit()
 
+    def print_context_info(self):
+        print("Vendor:", self.ctx.info["GL_VENDOR"])
+        print("Renderer:", self.ctx.info["GL_RENDERER"])
+        print("OpenGL version:", self.ctx.info["GL_VERSION"])
+        print("GLSL version:", self.ctx.info.get(
+            "GL_SHADING_LANGUAGE_VERSION", "Unknown"))
+
+        # Also available
+        print("\nModernGL detected version code:", self.ctx.version_code)
+
+        renderer = self.ctx.info["GL_RENDERER"]
+
+        if "NVIDIA" in renderer:
+            print("Running on NVIDIA GPU ✅")
+        else:
+            print("Not using NVIDIA GPU ⚠️")
+
 
 if __name__ == '__main__':
     app = VoxelEngine()
+    app.print_context_info()
     app.run()
