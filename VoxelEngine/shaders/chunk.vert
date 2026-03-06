@@ -41,7 +41,7 @@ vec3 hash31(float p) {
 }
 
 void main() {
-	int uv_index = gl_VertexID % 6 + (face_id & 1) + flip_id * 2 * 6;
+	int uv_index = gl_VertexID % 6 + ((face_id & 1) + flip_id * 2) * 6;
 	uv = uv_coords[uv_indices[uv_index]];
 	voxel_color = hash31(voxel_id);
 	shading = face_shading[face_id] * ao_values[ao_id];
