@@ -86,8 +86,40 @@ class VoxelEngine:
         else:
             print("Not using NVIDIA GPU ⚠️")
 
+    @staticmethod
+    def detect_max_opengl_version():
+        # Versions to try (highest first)
+        versions = [
+            (4, 6),
+            (4, 5),
+            (4, 4),
+            (4, 3),
+            (4, 2),
+            (4, 1),
+            (4, 0),
+            (3, 3),
+        ]
+
+        for major, minor in versions:
+            try:
+                ctx = mgl.create_standalone_context(
+                    require=major * 100 + minor * 10)
+                print(f"Supported OpenGL version: {major}.{minor}")
+                print("Renderer:", ctx.info.get("GL_RENDERER"))
+                print("Vendor:", ctx.info.get("GL_VENDOR"))
+                print("Version string:", ctx.info.get("GL_VERSION"))
+                break
+            except Exception:
+                pass
+        else:
+            print("No compatible OpenGL version found")
+
 
 if __name__ == '__main__':
+    print("Maximum available OpenGL version:")
+    VoxelEngine.detect_max_opengl_version()
+
     app = VoxelEngine()
+    print("\nCurrently used OpenGL version:")
     app.print_context_info()
     app.run()
