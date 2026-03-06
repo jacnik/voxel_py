@@ -1,8 +1,9 @@
-from settings import (njit, np, glm, math, WIN_RES, BG_COLOR)
+from settings import (WIN_RES, BG_COLOR)
 import moderngl as mgl
 import pygame as pg
 
 import sys
+
 from shader_program import ShaderProgram
 from scene import Scene
 from player import Player
